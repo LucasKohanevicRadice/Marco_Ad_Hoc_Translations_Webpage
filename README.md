@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Marco Izaac — Ad Hoc Käännöspalvelut
 
-## Getting Started
+Yksisivuinen sivusto Brasilia-Suomi ad hoc -käännöspalvelulle. Next.js 16 (App Router),
+React 19, Tailwind CSS v4, yhteydenottolomake Resendin kautta.
 
-First, run the development server:
+## Kehitys
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Ympäristömuuttujat
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Kopioi [.env.example](./.env.example) tiedostoksi `.env.local` ja täytä arvot:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+RESEND_API_KEY=re_xxxxxxxx        # resend.com → API Keys
+CONTACT_EMAIL=...                 # lomakkeen vastaanottaja, vain palvelimella
+NEXT_PUBLIC_CONTACT_EMAIL=...     # sivulla näytettävä osoite
+UPSTASH_REDIS_REST_URL=...        # rate limit; ilman näitä muistinvarainen varajärjestelmä
+UPSTASH_REDIS_REST_TOKEN=...
+```
 
-## Learn More
+Tuotannossa samat muuttujat lisätään Vercelin projektiasetuksiin
+(Settings → Environment Variables) — `.env.local` ei mene gittiin.
 
-To learn more about Next.js, take a look at the following resources:
+## Testit
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm test         # Vitest: yhteydenottoreitin turvalogiikka
+npm run test:watch
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Build & Deploy
 
-## Deploy on Vercel
+```bash
+npm run build    # tuotantobuild (.next)
+vercel           # deploy Verceliin
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Sivusto on suunniteltu ajettavaksi Vercelissä täydellä Next.js-runtimella (ei staattista
+exportia — yhteydenottolomake tarvitsee palvelinreitin `/api/contact`).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Dokumentaatio
+
+- [CLAUDE.md](./CLAUDE.md) — projektin rakenne ja säännöt
+- [DESIGN.md](./DESIGN.md) — design-järjestelmän spesifikaatio
+- [HANDOVER.md](./HANDOVER.md) — tehdyt ja jäljellä olevat tehtävät ennen julkaisua
