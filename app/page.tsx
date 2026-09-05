@@ -22,7 +22,7 @@ export default function Home() {
             backgroundPosition: "45% center",
           }}
         >
-          <div className="absolute inset-0 bg-[var(--color-primary)]/20 backdrop-brightness-75" />
+          <div className="flag-divider absolute inset-0 backdrop-brightness-75" />
         </div>
         <Disclaimer />
         <Contact />

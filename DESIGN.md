@@ -122,6 +122,26 @@ The palette is anchored by a deep **Finnish Navy Blue**, which serves as the pri
 
 The background uses a crisp off-white to reduce eye strain during long reading sessions, while the typography utilizes a near-black navy to maintain softer contrast than pure black.
 
+## Dark Theme
+
+The palette above is the light theme. A dark theme is defined in `app/globals.css`
+under `@media (prefers-color-scheme: dark)`, which redefines the same token names —
+components reference only variables, so they need no changes.
+
+Three decisions are deliberate and should not be "corrected" without thought:
+
+- **Primary inverts.** `--color-primary` is used both as heading text (`text-primary`)
+  and as button background (`bg-primary`). Dark mode therefore uses the light tone
+  (`#aec6ff`) with a dark `on-primary`, following Material's convention. Headings stay
+  readable and buttons read as light-on-dark.
+- **`primary-container` stays lighter than `primary`.** Its only use is the submit
+  button's hover. Light mode hovers lighter, so dark mode must too — not Material's
+  darker container tone.
+- **Footer and the flag divider have their own classes** (`.footer-surface`,
+  `.flag-divider`) rather than using `bg-primary`. With an inverted primary the footer
+  would become the brightest element on the page, and the divider's light wash would
+  bleach the flag image. Both keep a dark navy identity in either theme.
+
 ## Typography
 
 This design system uses a dual-font strategy. **Hanken Grotesk** is used for headlines to provide a contemporary, sharp, and engineered feel. Its geometric precision echoes Nordic design principles. 

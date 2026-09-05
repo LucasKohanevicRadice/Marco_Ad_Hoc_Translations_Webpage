@@ -131,7 +131,7 @@ export default function Contact() {
                       type="text"
                       name="name"
                       required
-                      className="w-full bg-white border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                      className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                     />
                   </div>
                   <div>
@@ -143,7 +143,7 @@ export default function Contact() {
                       type="email"
                       name="email"
                       required
-                      className="w-full bg-white border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                      className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                     />
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function Contact() {
                   </label>
                   <select
                     name="service"
-                    className="w-full bg-white border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                    className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                   >
                     <option>{c.option1}</option>
                     <option>{c.option2}</option>
@@ -172,12 +172,12 @@ export default function Contact() {
                     name="message"
                     rows={4}
                     required
-                    className="w-full bg-white border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                    className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                   />
                 </div>
 
                 {formState === "error" && (
-                  <p className="text-sm text-red-600">
+                  <p className="text-sm text-error">
                     {errorMessage || "Lähetys epäonnistui. Yritä uudelleen."}
                   </p>
                 )}

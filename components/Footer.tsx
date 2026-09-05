@@ -7,30 +7,30 @@ export default function Footer() {
   const f = t.footer;
 
   return (
-    <footer className="bg-primary w-full">
+    <footer className="footer-surface w-full">
       <div className="flex flex-col md:flex-row justify-between items-center py-lg px-gutter w-full max-w-[1200px] mx-auto gap-md">
         <div className="flex flex-col gap-xs items-center md:items-start">
-          <span className="text-xl font-bold text-on-primary" style={{ fontFamily: "var(--font-display)" }}>
+          <span className="text-xl font-bold" style={{ fontFamily: "var(--font-display)" }}>
             Marco Izaac
           </span>
-          <p className="text-sm text-on-primary opacity-80">{f.copyright}</p>
+          <p className="text-sm opacity-80">{f.copyright}</p>
         </div>
         <div className="flex gap-lg">
           <a
             href="#services"
-            className="text-on-primary opacity-80 hover:opacity-100 hover:text-secondary-fixed transition-colors duration-200 underline text-sm"
+            className="opacity-80 hover:opacity-100 hover:text-secondary-fixed transition-colors duration-200 underline text-sm"
           >
             {f.services}
           </a>
           <a
             href="#contact"
-            className="text-on-primary opacity-80 hover:opacity-100 hover:text-secondary-fixed transition-colors duration-200 underline text-sm"
+            className="opacity-80 hover:opacity-100 hover:text-secondary-fixed transition-colors duration-200 underline text-sm"
           >
             {f.contact}
           </a>
           <a
             href="/tietosuoja"
-            className="text-on-primary opacity-80 hover:opacity-100 hover:text-secondary-fixed transition-colors duration-200 underline text-sm"
+            className="opacity-80 hover:opacity-100 hover:text-secondary-fixed transition-colors duration-200 underline text-sm"
           >
             Tietosuoja
           </a>

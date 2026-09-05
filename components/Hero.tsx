@@ -15,7 +15,7 @@ export default function Hero() {
         backgroundPosition: "45% center",
       }}
     >
-      <div className="absolute inset-0 bg-white/85 backdrop-blur-sm" />
+      <div className="hero-scrim absolute inset-0 backdrop-blur-sm" />
       <div className="relative z-10 max-w-[1200px] mx-auto px-gutter grid grid-cols-1 lg:grid-cols-2 gap-lg items-center">
         <div>
           <span className="inline-block bg-secondary-container text-on-secondary-container px-sm py-xs rounded-full text-xs font-semibold mb-md">
