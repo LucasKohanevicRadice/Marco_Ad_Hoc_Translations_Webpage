@@ -29,28 +29,31 @@ Tarkoitus: pitää kirjaa mitä on tehty ja mitä puuttuu ennen tuotantojulkaisu
 - **Redundantit tiedostot poistettu** — `code.html` (design-työkalun prototyyppi, jonka tokenit ovat nyt globals.css:ssä), `screen.png`, juuren kaksoiskappaleet lippukuvista (identtiset `public/`-kopioiden kanssa, 2,5 MB), create-next-app:n käyttämättömät SVG:t ja vanhentunut `out/`-kansio.
 - **Next.js päivitetty 16.2.6 → 16.3.4** — vanhassa versiossa oli yhdeksän korkean vakavuuden advisorya (mm. cache confusion POST-pyynnöille). `npm audit`: 0 haavoittuvuutta.
 
+- **Julkaistu Verceliin 2026-09-05** — projekti `lucas-vercel3/marco-ad-hoc-translations`, tuotanto-osoite **https://marco-ad-hoc-translations.vercel.app**. GitHub-repo yhdistetty (`vercel link` teki sen CLI:n kautta, koska web-UI temppuili), joten jokainen push `main`-branchiin deployaa automaattisesti. `CONTACT_EMAIL` ja `NEXT_PUBLIC_CONTACT_EMAIL` asetettu Vercelin Production- ja Preview-ympäristöihin.
+- **Korjattu tuotannon kaatava bugi** — Resend-client luotiin moduulitasolla, mutta sen konstruktori heittää poikkeuksen ilman API-avainta. Ilman avainta reitti olisi kaatunut 500:aan siistin 503:n sijaan. Client luodaan nyt vasta env-tarkistuksen jälkeen; regressiotesti lisätty ja todennettu (kaatuu jos bugi palautetaan).
+
 ## Kesken / Puuttuu ennen deployta
 
 ### 🔴 Estää julkaisun
 
-1. **RESEND_API_KEY on vielä placeholder** (`re_placeholder`). Tarvitaan tili resend.com:iin ja oikea avain.
-2. **Upstash-tietokanta luomatta** — luo ilmainen Redis console.upstash.com:issa ja kopioi `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`. Ilman näitä sivusto toimii, mutta rate limit on vain muistinvarainen (ei sitova tuotannossa).
-3. **Env-muuttujat Vercelille** — kaikki viisi (`RESEND_API_KEY`, `CONTACT_EMAIL`, `NEXT_PUBLIC_CONTACT_EMAIL`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`) lisättävä Vercelin projektiasetuksiin. `.env.local` ei mene gittiin eikä siirry Verceliin automaattisesti.
+1. **RESEND_API_KEY puuttuu tuotannosta** — sivusto on pystyssä, mutta yhteydenottolomake vastaa `503 Lomake ei ole juuri nyt käytössä` kunnes oikea avain on olemassa. Luo tili resend.com:iin, kopioi avain, ja aja repon juuressa:
+   `printf '%s' 're_oikea_avain' | vercel env add RESEND_API_KEY production`
+   Sama `preview`-ympäristöön. Muutos tulee voimaan seuraavassa deployssa (`vercel --prod` tai uusi push).
+2. **Upstash-tietokanta luomatta** — luo ilmainen Redis console.upstash.com:issa ja lisää `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` samalla tavalla. Ilman näitä lomake toimii, mutta rate limit on vain muistinvarainen (ei sitova tuotannossa).
 
 ### 🟡 Kannattaa hoitaa ennen julkaisua
 
-4. **Vercel-tili ja deploy** — luo tili vercel.com:iin (kirjaudu GitHubilla), yhdistä repo, "Deploy". Ilmainen `*.vercel.app`-osoite riittää alkuun.
-5. **Koko repo committoimatta** — vain alkuperäinen scaffold-commit olemassa. Ennen ensimmäistä pushia: varmista `git status`illa ettei `.env.local` ole mukana.
-6. **Lomakkeen testaus tuotannossa** — oikealla API-avaimella: lähetä testiviesti ja varmista että se saapuu `CONTACT_EMAIL`-osoitteeseen (tarkista myös roskapostikansio, koska `from` on `onboarding@resend.dev`).
+3. **Lomakkeen testaus tuotannossa** — oikealla API-avaimella: lähetä testiviesti ja varmista että se saapuu `CONTACT_EMAIL`-osoitteeseen (tarkista myös roskapostikansio, koska `from` on `onboarding@resend.dev`).
 
 ### 🟢 Nice-to-have
 
-7. **Cloudflare Turnstile** jos roskapostia alkaa silti tulla — ilmainen, näkymätön useimmille käyttäjille, pysäyttää botit lomaketasolla ennen rate limitiä.
-8. Ei robots.txt/sitemap.xml/OG-kuvaa — vaikuttaa hakukonenäkyvyyteen ja linkin esikatselukuvaan jaettaessa.
-9. Isot kuvat `public/`-kansiossa (~1.2–1.3MB/kpl) — kannattaa pakata.
-10. Tietosuojaseloste on vain suomeksi, vaikka sivustolla on pt-br-käännös.
-11. Testit kattavat vain API-reitin. Komponenttitestejä (Hero, Contact-lomakkeen UI) ei ole.
-12. `Marco izaac.jpeg` (repon juuressa) on muotokuvan alkuperäistiedosto, josta `public/marco-izaac.png` on muokattu. Ei käytössä sivustolla. Päätä säilytetäänkö se repossa vai siirretäänkö talteen repon ulkopuolelle — sitä ei ole koskaan committoitu, joten poisto olisi lopullinen.
+4. **Cloudflare Turnstile** jos roskapostia alkaa silti tulla — ilmainen, näkymätön useimmille käyttäjille, pysäyttää botit lomaketasolla ennen rate limitiä.
+5. Ei robots.txt/sitemap.xml/OG-kuvaa — vaikuttaa hakukonenäkyvyyteen ja linkin esikatselukuvaan jaettaessa.
+6. Isot kuvat `public/`-kansiossa (~1.2–1.3MB/kpl) — kannattaa pakata.
+7. Tietosuojaseloste on vain suomeksi, vaikka sivustolla on pt-br-käännös.
+8. Testit kattavat vain API-reitin. Komponenttitestejä (Hero, Contact-lomakkeen UI) ei ole.
+9. **Oma domain** — nyt käytössä `marco-ad-hoc-translations.vercel.app`. Oikea domain lisätään Vercelin projektiasetuksista tai `vercel domains add`.
+10. `Marco izaac.jpeg` (repon juuressa) on muotokuvan alkuperäistiedosto, josta `public/marco-izaac.png` on muokattu. Ei käytössä sivustolla. Päätä säilytetäänkö se repossa vai siirretäänkö talteen repon ulkopuolelle — sitä ei ole koskaan committoitu, joten poisto olisi lopullinen.
 
 ## Avoimet kysymykset asiakkaalle (Marco/setä)
 
