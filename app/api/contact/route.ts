@@ -4,8 +4,6 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { translations } from "@/lib/translations";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const EMAIL_RE = /^[^\s@\r\n]+@[^\s@\r\n]+\.[^\s@\r\n]+$/;
 
 /** Sallitut palveluvalinnat johdetaan käännöksistä, jotta lista pysyy lomakkeen mukana. */
@@ -83,7 +81,8 @@ function isSameOrigin(request: Request) {
 
 export async function POST(request: Request) {
   const recipient = process.env.CONTACT_EMAIL;
-  if (!recipient || !process.env.RESEND_API_KEY) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!recipient || !apiKey) {
     console.error(
       "[contact] Puuttuva ympäristömuuttuja: CONTACT_EMAIL ja/tai RESEND_API_KEY on asetettava."
     );
@@ -134,6 +133,10 @@ export async function POST(request: Request) {
   const cleanName = name.trim().replace(/[\r\n]+/g, " ");
   const serviceStr =
     typeof service === "string" && ALLOWED_SERVICES.has(service) ? service : "Yleinen";
+
+  // Resend-client luodaan vasta tässä: sen konstruktori heittää poikkeuksen ilman
+  // avainta, ja moduulitasolla se kaataisi koko reitin ennen 503-tarkistusta.
+  const resend = new Resend(apiKey);
 
   const { error } = await resend.emails.send({
     from: "Yhteydenottolomake <onboarding@resend.dev>",

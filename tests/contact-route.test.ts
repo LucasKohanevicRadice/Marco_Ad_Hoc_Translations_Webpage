@@ -1,4 +1,5 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
+import { Resend } from "resend";
 import { translations } from "@/lib/translations";
 
 const { sendMock, limitMock } = vi.hoisted(() => ({
@@ -106,6 +107,17 @@ describe("ympäristömuuttujat", () => {
 
     expect(res.status).toBe(503);
     expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("ei rakenna Resend-clientiä ilman avainta", async () => {
+    // Resendin konstruktori heittää poikkeuksen ilman avainta. Jos client luodaan
+    // moduulitasolla, koko reitti kaatuu 500:aan siistin 503:n sijaan.
+    vi.stubEnv("RESEND_API_KEY", "");
+    const POST = await loadRoute();
+
+    await POST(makeRequest(VALID_BODY));
+
+    expect(vi.mocked(Resend)).not.toHaveBeenCalled();
   });
 });
 
