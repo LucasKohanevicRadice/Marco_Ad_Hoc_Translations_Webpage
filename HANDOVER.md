@@ -36,9 +36,12 @@ Tarkoitus: pitää kirjaa mitä on tehty ja mitä puuttuu ennen tuotantojulkaisu
 
 ### 🔴 Estää julkaisun
 
-1. **RESEND_API_KEY puuttuu tuotannosta** — sivusto on pystyssä, mutta yhteydenottolomake vastaa `503 Lomake ei ole juuri nyt käytössä` kunnes oikea avain on olemassa. Luo tili resend.com:iin, kopioi avain, ja aja repon juuressa:
-   `printf '%s' 're_oikea_avain' | vercel env add RESEND_API_KEY production`
-   Sama `preview`-ympäristöön. Muutos tulee voimaan seuraavassa deployssa (`vercel --prod` tai uusi push).
+1. **Sähköposti ei mene perille ilman verifioitua domainia.** `RESEND_API_KEY` on asetettu (Production + Preview) ja koodi toimii, mutta Resend palauttaa `403`:
+   > "You can only send testing emails to your own email address (lucas.kohanevicradice@hotmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain."
+
+   Eli ilman omaa domainia lomake lähettää vain Resend-tilin omistajan osoitteeseen — ei asiakkaan. Vaihtoehdot:
+   - **A: osta domain** (~10–15 €/v), verifioi se resend.com/domains-sivulla (SPF/DKIM-tietueet DNS:ään) ja vaihda `from` osoitteeksi tuolla domainilla (esim. `lomake@domain.fi`). Sama domain kannattaa ottaa myös sivuston osoitteeksi `*.vercel.app`:n tilalle.
+   - **B: vaihda palveluntarjoajaa** — esim. Formspree (alkuperäinen suunnitelma) toimittaa mihin tahansa vahvistettuun osoitteeseen ilman omaa domainia, ilmaistasolla ~50 lähetystä/kk.
 2. **Upstash-tietokanta luomatta** — luo ilmainen Redis console.upstash.com:issa ja lisää `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` samalla tavalla. Ilman näitä lomake toimii, mutta rate limit on vain muistinvarainen (ei sitova tuotannossa).
 
 ### 🟡 Kannattaa hoitaa ennen julkaisua
@@ -57,5 +60,5 @@ Tarkoitus: pitää kirjaa mitä on tehty ja mitä puuttuu ennen tuotantojulkaisu
 
 ## Avoimet kysymykset asiakkaalle (Marco/setä)
 
-- Halutaanko ostaa oma domain sivustolle ja/tai Resendin lähettäjäosoitteelle, vai riittääkö alkuun ilmainen `*.vercel.app` + `onboarding@resend.dev`?
+- **Oma domain on nyt pakollinen, ei valinnainen** (ks. estävä kohta 1). Halutaanko ostaa domain, ja mikä nimi?
 - Onko `CONTACT_EMAIL`-osoite sellainen jota hän seuraa aktiivisesti?

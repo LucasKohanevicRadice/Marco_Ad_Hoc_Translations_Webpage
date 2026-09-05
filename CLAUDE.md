@@ -54,7 +54,9 @@ vercel           # deploy to production
 2. Set env vars in .env.local (dev) and Vercel project env vars (prod) — see
    .env.example. Upstash vars are optional; without them the rate limiter falls
    back to an in-memory counter that resets per instance.
-3. `from` is Resend's sandbox address — no domain verification required.
+3. `from` is Resend's sandbox address, which ONLY delivers to the Resend
+   account owner's own email. Reaching the client's inbox requires a verified
+   domain at resend.com/domains and a `from` address on it.
 
 Abuse protections in route.ts (rationale in HANDOVER.md, covered by tests):
 honeypot field, same-origin check, 5 sends/hour per IP via Upstash Redis,
