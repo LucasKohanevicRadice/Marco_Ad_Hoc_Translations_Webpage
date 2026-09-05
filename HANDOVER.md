@@ -29,7 +29,11 @@ Tarkoitus: pitää kirjaa mitä on tehty ja mitä puuttuu ennen tuotantojulkaisu
 - **Redundantit tiedostot poistettu** — `code.html` (design-työkalun prototyyppi, jonka tokenit ovat nyt globals.css:ssä), `screen.png`, juuren kaksoiskappaleet lippukuvista (identtiset `public/`-kopioiden kanssa, 2,5 MB), create-next-app:n käyttämättömät SVG:t ja vanhentunut `out/`-kansio.
 - **Next.js päivitetty 16.2.6 → 16.3.4** — vanhassa versiossa oli yhdeksän korkean vakavuuden advisorya (mm. cache confusion POST-pyynnöille). `npm audit`: 0 haavoittuvuutta.
 
-- **Julkaistu Verceliin 2026-09-05** — projekti `lucas-vercel3/marco-ad-hoc-translations`, tuotanto-osoite **https://marco-ad-hoc-translations.vercel.app**. GitHub-repo yhdistetty (`vercel link` teki sen CLI:n kautta, koska web-UI temppuili), joten jokainen push `main`-branchiin deployaa automaattisesti. `CONTACT_EMAIL` ja `NEXT_PUBLIC_CONTACT_EMAIL` asetettu Vercelin Production- ja Preview-ympäristöihin.
+- **Siirretty Netlifyyn 2026-09-05** — tuotanto-osoite **https://marco-ad-hoc-translations.netlify.app**, GitHub-repo kytketty (automaattinen deploy `main`-branchista), `netlify.toml` ohjaa build-asetukset. Syy siirtoon: Vercelin Hobby-taso **kieltää kaupallisen käytön** ("Advertising the sale of a product or service"), joten sivusto olisi vaatinut Pro-tason $20/kk. Netlifyn käyttöehdoissa eikä Acceptable Use Policyssä ole vastaavaa kieltoa, ja ilmaistaso (100 GB siirtoa, 300 buildminuuttia, 125 000 funktiokutsua/kk) riittää moninkertaisesti. Säästö ~$240/vuosi.
+  - Huom: paikallinen `netlify deploy --build` **ei toimi tässä ympäristössä** — `@netlify/plugin-nextjs` kaatuu Windowsilla ("Failed publishing static content"), todennäköisesti polun `ä`-kirjaimen ja kenoviivojen takia. Deployaa aina gitin kautta, jolloin Netlify rakentaa Linux-buildereillaan. Se toimii.
+  - Sivustolla oli aluksi Netlify SSO päällä (`sso_login: true`) → kaikki sivut 401. Poistettu.
+- **Todennettu tuotannosta (Netlify)**: etusivu ja `/tietosuoja` 200; sähköpostiosoitetta ei löydy HTML:stä; API-reitti 403 ilman Originia, 403 vieraasta originista, 400 puutteellisesta syötteestä, 200 + ei lähetystä honeypotista, 429 kuudennesta pyynnöstä.
+- **Julkaistu Verceliin 2026-09-05** *(korvattu Netlifyllä — Vercel-projekti poistettava)* — projekti `lucas-vercel3/marco-ad-hoc-translations`, tuotanto-osoite **https://marco-ad-hoc-translations.vercel.app**. GitHub-repo yhdistetty (`vercel link` teki sen CLI:n kautta, koska web-UI temppuili), joten jokainen push `main`-branchiin deployaa automaattisesti. `CONTACT_EMAIL` ja `NEXT_PUBLIC_CONTACT_EMAIL` asetettu Vercelin Production- ja Preview-ympäristöihin.
 - **Korjattu tuotannon kaatava bugi** — Resend-client luotiin moduulitasolla, mutta sen konstruktori heittää poikkeuksen ilman API-avainta. Ilman avainta reitti olisi kaatunut 500:aan siistin 503:n sijaan. Client luodaan nyt vasta env-tarkistuksen jälkeen; regressiotesti lisätty ja todennettu (kaatuu jos bugi palautetaan).
 
 ## Kesken / Puuttuu ennen deployta
@@ -40,13 +44,14 @@ Tarkoitus: pitää kirjaa mitä on tehty ja mitä puuttuu ennen tuotantojulkaisu
    > "You can only send testing emails to your own email address (lucas.kohanevicradice@hotmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain."
 
    Eli ilman omaa domainia lomake lähettää vain Resend-tilin omistajan osoitteeseen — ei asiakkaan. Vaihtoehdot:
-   - **A: osta domain** (~10–15 €/v), verifioi se resend.com/domains-sivulla (SPF/DKIM-tietueet DNS:ään) ja vaihda `from` osoitteeksi tuolla domainilla (esim. `lomake@domain.fi`). Sama domain kannattaa ottaa myös sivuston osoitteeksi `*.vercel.app`:n tilalle.
+   - **A: osta domain** (~10–15 €/v; `.com` sopii, koska asiakas asuu Brasiliassa). Verifioi se resend.com/domains-sivulla (SPF/DKIM-tietueet DNS:ään) ja vaihda `from` osoitteeksi tuolla domainilla (esim. `lomake@domain.com`). **Sama domain, yksi ostos**, hoitaa sekä sivuston osoitteen että sähköpostin lähettäjän — eri DNS-tietuetyypit osoittavat eri palvelut. Osta setäsi nimiin, ei omiisi. Vapaana tarkistettu: `marcoizaac.com`, `izaactranslations.com`, `izaackaannos.com`.
    - **B: vaihda palveluntarjoajaa** — esim. Formspree (alkuperäinen suunnitelma) toimittaa mihin tahansa vahvistettuun osoitteeseen ilman omaa domainia, ilmaistasolla ~50 lähetystä/kk.
-2. **Upstash-tietokanta luomatta** — luo ilmainen Redis console.upstash.com:issa ja lisää `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` samalla tavalla. Ilman näitä lomake toimii, mutta rate limit on vain muistinvarainen (ei sitova tuotannossa).
+2. **Upstash-tietokanta luomatta** — luo ilmainen Redis console.upstash.com:issa ja lisää `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (`netlify env:set`). Ilman näitä rate limit on vain muistinvarainen. Tuotantotestissä se piti (429 kuudennesta pyynnöstä), koska sama funktioinstanssi palveli kaikki pyynnöt — mutta se ei ole taattua instanssien välillä.
+3. **Vercel-projekti poistettava** — `lucas-vercel3/marco-ad-hoc-translations` on yhä pystyssä ja rikkoo Hobby-tason kaupallisen käytön kieltoa. Poista `vercel project rm` tai dashboardista.
 
 ### 🟡 Kannattaa hoitaa ennen julkaisua
 
-3. **Lomakkeen testaus tuotannossa** — oikealla API-avaimella: lähetä testiviesti ja varmista että se saapuu `CONTACT_EMAIL`-osoitteeseen (tarkista myös roskapostikansio, koska `from` on `onboarding@resend.dev`).
+4. **Lomakkeen päästä päähän -testi** — kun domain on verifioitu: lähetä testiviesti ja varmista että se saapuu `CONTACT_EMAIL`-osoitteeseen (tarkista myös roskapostikansio). Tähän asti ketju on todennettu Resendiin asti, mutta ei perille.
 
 ### 🟢 Nice-to-have
 
