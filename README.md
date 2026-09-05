@@ -3,6 +3,8 @@
 Yksisivuinen sivusto Brasilia-Suomi ad hoc -käännöspalvelulle. Next.js 16 (App Router),
 React 19, Tailwind CSS v4, yhteydenottolomake Resendin kautta.
 
+**Tuotanto:** https://marco-ad-hoc-translations.netlify.app
+
 ## Kehitys
 
 ```bash
@@ -22,8 +24,8 @@ UPSTASH_REDIS_REST_URL=...        # rate limit; ilman näitä muistinvarainen va
 UPSTASH_REDIS_REST_TOKEN=...
 ```
 
-Tuotannossa samat muuttujat lisätään Vercelin projektiasetuksiin
-(Settings → Environment Variables) — `.env.local` ei mene gittiin.
+Tuotannossa samat muuttujat asetetaan Netlifyyn (`netlify env:set NIMI arvo`, tai
+Project configuration → Environment variables) — `.env.local` ei mene gittiin.
 
 ## Testit
 
@@ -36,11 +38,16 @@ npm run test:watch
 
 ```bash
 npm run build    # tuotantobuild (.next)
-vercel           # deploy Verceliin
+git push         # deploy: Netlify rakentaa main-branchin automaattisesti
 ```
 
-Sivusto on suunniteltu ajettavaksi Vercelissä täydellä Next.js-runtimella (ei staattista
-exportia — yhteydenottolomake tarvitsee palvelinreitin `/api/contact`).
+Sivusto ajetaan **Netlifyssä** täydellä Next.js-runtimella (ei staattista exportia —
+yhteydenottolomake tarvitsee palvelinreitin `/api/contact`). Build-asetukset ovat
+[netlify.toml](./netlify.toml):ssa.
+
+Deployaa vain gitin kautta. Paikallinen `netlify deploy --build` kaatuu Windowsilla:
+`@netlify/plugin-nextjs` ei selviä tästä polusta ("Failed publishing static content").
+Netlifyn omat Linux-builderit rakentavat projektin ongelmitta.
 
 ## Dokumentaatio
 

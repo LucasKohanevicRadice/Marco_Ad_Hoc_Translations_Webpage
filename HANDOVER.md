@@ -33,7 +33,7 @@ Tarkoitus: pitää kirjaa mitä on tehty ja mitä puuttuu ennen tuotantojulkaisu
   - Huom: paikallinen `netlify deploy --build` **ei toimi tässä ympäristössä** — `@netlify/plugin-nextjs` kaatuu Windowsilla ("Failed publishing static content"), todennäköisesti polun `ä`-kirjaimen ja kenoviivojen takia. Deployaa aina gitin kautta, jolloin Netlify rakentaa Linux-buildereillaan. Se toimii.
   - Sivustolla oli aluksi Netlify SSO päällä (`sso_login: true`) → kaikki sivut 401. Poistettu.
 - **Todennettu tuotannosta (Netlify)**: etusivu ja `/tietosuoja` 200; sähköpostiosoitetta ei löydy HTML:stä; API-reitti 403 ilman Originia, 403 vieraasta originista, 400 puutteellisesta syötteestä, 200 + ei lähetystä honeypotista, 429 kuudennesta pyynnöstä.
-- **Julkaistu Verceliin 2026-09-05** *(korvattu Netlifyllä — Vercel-projekti poistettava)* — projekti `lucas-vercel3/marco-ad-hoc-translations`, tuotanto-osoite **https://marco-ad-hoc-translations.vercel.app**. GitHub-repo yhdistetty (`vercel link` teki sen CLI:n kautta, koska web-UI temppuili), joten jokainen push `main`-branchiin deployaa automaattisesti. `CONTACT_EMAIL` ja `NEXT_PUBLIC_CONTACT_EMAIL` asetettu Vercelin Production- ja Preview-ympäristöihin.
+- **Vercel-projekti poistettu 2026-09-05** — sivusto oli ensin Vercelissä, mutta se siirrettiin Netlifyyn kaupallisen käytön ehtojen takia. Projekti, sen deployt ja `.vercel`-kansio poistettu; vanha osoite palauttaa 404.
 - **Korjattu tuotannon kaatava bugi** — Resend-client luotiin moduulitasolla, mutta sen konstruktori heittää poikkeuksen ilman API-avainta. Ilman avainta reitti olisi kaatunut 500:aan siistin 503:n sijaan. Client luodaan nyt vasta env-tarkistuksen jälkeen; regressiotesti lisätty ja todennettu (kaatuu jos bugi palautetaan).
 
 ## Kesken / Puuttuu ennen deployta
@@ -47,7 +47,6 @@ Tarkoitus: pitää kirjaa mitä on tehty ja mitä puuttuu ennen tuotantojulkaisu
    - **A: osta domain** (~10–15 €/v; `.com` sopii, koska asiakas asuu Brasiliassa). Verifioi se resend.com/domains-sivulla (SPF/DKIM-tietueet DNS:ään) ja vaihda `from` osoitteeksi tuolla domainilla (esim. `lomake@domain.com`). **Sama domain, yksi ostos**, hoitaa sekä sivuston osoitteen että sähköpostin lähettäjän — eri DNS-tietuetyypit osoittavat eri palvelut. Osta setäsi nimiin, ei omiisi. Vapaana tarkistettu: `marcoizaac.com`, `izaactranslations.com`, `izaackaannos.com`.
    - **B: vaihda palveluntarjoajaa** — esim. Formspree (alkuperäinen suunnitelma) toimittaa mihin tahansa vahvistettuun osoitteeseen ilman omaa domainia, ilmaistasolla ~50 lähetystä/kk.
 2. **Upstash-tietokanta luomatta** — luo ilmainen Redis console.upstash.com:issa ja lisää `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (`netlify env:set`). Ilman näitä rate limit on vain muistinvarainen. Tuotantotestissä se piti (429 kuudennesta pyynnöstä), koska sama funktioinstanssi palveli kaikki pyynnöt — mutta se ei ole taattua instanssien välillä.
-3. **Vercel-projekti poistettava** — `lucas-vercel3/marco-ad-hoc-translations` on yhä pystyssä ja rikkoo Hobby-tason kaupallisen käytön kieltoa. Poista `vercel project rm` tai dashboardista.
 
 ### 🟡 Kannattaa hoitaa ennen julkaisua
 
@@ -60,7 +59,7 @@ Tarkoitus: pitää kirjaa mitä on tehty ja mitä puuttuu ennen tuotantojulkaisu
 6. Isot kuvat `public/`-kansiossa (~1.2–1.3MB/kpl) — kannattaa pakata.
 7. Tietosuojaseloste on vain suomeksi, vaikka sivustolla on pt-br-käännös.
 8. Testit kattavat vain API-reitin. Komponenttitestejä (Hero, Contact-lomakkeen UI) ei ole.
-9. **Oma domain** — nyt käytössä `marco-ad-hoc-translations.vercel.app`. Oikea domain lisätään Vercelin projektiasetuksista tai `vercel domains add`.
+9. **Oma domain** — nyt käytössä `marco-ad-hoc-translations.netlify.app`. Oikea domain lisätään Netlifyn projektiasetuksista (Domain management).
 10. `Marco izaac.jpeg` (repon juuressa) on muotokuvan alkuperäistiedosto, josta `public/marco-izaac.png` on muokattu. Ei käytössä sivustolla. Päätä säilytetäänkö se repossa vai siirretäänkö talteen repon ulkopuolelle — sitä ei ole koskaan committoitu, joten poisto olisi lopullinen.
 
 ## Avoimet kysymykset asiakkaalle (Marco/setä)
