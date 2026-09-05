@@ -1,7 +1,7 @@
 # Marco Izaac — Ad Hoc Käännöspalvelut
 
 Single-page client website. Brazilian-Finnish translation service for Marco Izaac.
-Built by Lucas for the client.
+Built by Lucas for the client. Live at marco-ad-hoc-translations.netlify.app.
 
 ## Stack
 
@@ -22,7 +22,7 @@ Next.js 16 · React 19 · Tailwind CSS v4 · Resend (contact form) · Deploy on 
 | lib/                        | LanguageContext + translations.ts (fi / pt-br i18n)      |
 | tests/                      | Vitest suite for the contact route (security behaviour)  |
 | DESIGN.md                   | Full design system spec — read before any UI work        |
-| HANDOVER.md                 | Launch checklist — done / remaining tasks                |
+| HANDOVER.md                 | **Read first** — status, next steps, environment gotchas |
 | netlify.toml                | Build command + Next.js plugin for Netlify                |
 | .env.example                | Required env vars, no real values (.env.local is gitignored) |
 
