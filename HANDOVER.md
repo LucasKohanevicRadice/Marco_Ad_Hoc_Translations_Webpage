@@ -108,8 +108,9 @@ asiakkaalle. Koodi on kunnossa — este on tilin puolella.
 - **`npm test` (21 testiä) pitää pysyä vihreänä.** Ne kattavat yhteydenottoreitin
   turvalogiikan, ja yksi niistä on regressiotesti bugille joka olisi kaatanut
   tuotannon. Todennettu että se oikeasti kaatuu jos bugi palautetaan.
-- **CLAUDE.md on pidettävä alle 70 rivissä** (Lucaksen globaali sääntö). Se on nyt 69
-  rivissä, joten uusi rivi vaatii toisen poistamista.
+- **CLAUDE.md saa olla enintään 100 riviä** — Lucas hyväksyi poikkeuksen globaaliin
+  70 rivin sääntöönsä 2026-09-05. Poikkeus on kirjattu myös itse tiedostoon, jottei
+  sitä trimmata takaisin 70:een.
 - **Kirjautumiset kunnossa:** `gh`, `netlify` (GitHub-kirjautumisella) ja `vercel`
   (kirjautunut, mutta Verceliä ei enää käytetä). Tarkista tarvittaessa
   `netlify status` ja `gh auth status`.
