@@ -18,7 +18,13 @@ export default function Navbar() {
           </span>
         </a>
 
-        <div className="hidden md:flex items-center gap-lg">
+        {/*
+          Katkaisukohta on xl eikä md, koska suomenkielinen brändi
+          ("Marco Izaac - Ad Hoc Tulkkauspalvelut") vie yksin 466 px ja
+          navigaatio 600 px. Sitä kapeammalla brändi, linkit ja painike
+          rivittyivät kahdelle riville 80 px korkeaan palkkiin.
+        */}
+        <div className="hidden xl:flex items-center gap-md">
           <a href="#services" className="text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200">
             {t.nav.services}
           </a>
@@ -49,7 +55,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="md:hidden p-sm text-primary"
+          className="xl:hidden p-sm text-primary"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -58,7 +64,7 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className="md:hidden bg-surface-container-lowest border-t border-outline-variant px-gutter py-md flex flex-col gap-md">
+        <div className="xl:hidden bg-surface-container-lowest border-t border-outline-variant px-gutter py-md flex flex-col gap-md">
           <a href="#services" onClick={() => setMenuOpen(false)} className="text-on-surface-variant font-medium">
             {t.nav.services}
           </a>
