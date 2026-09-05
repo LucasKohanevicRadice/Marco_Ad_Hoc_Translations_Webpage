@@ -4,34 +4,128 @@ html {
   scroll-padding-top: 80px;
 }
 
+/*
+ * TEEMAT
+ *
+ * Tumma on oletus: @theme-lohko sisältää tummat arvot, ja vaalea teema on
+ * ylikirjoitus :root[data-theme="light"] -valitsimessa. Attribuutin asettaa
+ * layout.tsx:n inline-skripti ennen ensimmäistä maalausta — se lukee käyttäjän
+ * oman valinnan localStoragesta ja putoaa muuten järjestelmän asetukseen.
+ * Ilman JavaScriptiä sivu on tumma, mikä on haluttu oletus.
+ *
+ * primary on tekstin ja korostusten väri (text-primary 39 paikassa: otsikot,
+ * ikonit, fokusrenkaat). Painikkeiden tausta on eri token, primary-surface,
+ * koska tummassa nämä vaativat vastakkaiset arvot: valkoinen teksti, tumma
+ * navy painike.
+ */
 @theme {
-  --color-primary: #001b44;
-  --color-on-primary: #ffffff;
-  --color-primary-container: #002f6c;
-  --color-on-primary-container: #7999dc;
-  --color-inverse-primary: #aec6ff;
+  --color-primary: #f0f2f5;
+  --color-on-primary: #001b44;
+  --color-primary-surface: #12345e;
+  --color-on-primary-surface: #ffffff;
+  --color-primary-surface-hover: #1c4a80;
+  --color-primary-container: #ccdcff;
+  --color-on-primary-container: #002f6c;
+  --color-inverse-primary: #001b44;
   --color-primary-fixed: #d8e2ff;
   --color-primary-fixed-dim: #aec6ff;
   --color-on-primary-fixed: #001a42;
   --color-on-primary-fixed-variant: #224583;
 
-  --color-secondary: #006e27;
-  --color-on-secondary: #ffffff;
+  --color-secondary: #65df76;
+  --color-on-secondary: #00390f;
   --color-secondary-container: #7ff98d;
-  --color-on-secondary-container: #007329;
+  --color-on-secondary-container: #00390f;
   --color-secondary-fixed: #81fc90;
   --color-secondary-fixed-dim: #65df76;
   --color-on-secondary-fixed: #002107;
   --color-on-secondary-fixed-variant: #00531c;
 
-  --color-tertiary: #6d5e00;
-  --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #c4ab00;
-  --color-on-tertiary-container: #493f00;
+  --color-tertiary: #e3c600;
+  --color-on-tertiary: #383000;
+  --color-tertiary-container: #524700;
+  --color-on-tertiary-container: #ffe243;
   --color-tertiary-fixed: #ffe243;
   --color-tertiary-fixed-dim: #e3c600;
   --color-on-tertiary-fixed: #211b00;
   --color-on-tertiary-fixed-variant: #524700;
+
+  --color-surface: #101416;
+  --color-surface-dim: #101416;
+  --color-surface-bright: #363a3c;
+  --color-surface-container-lowest: #0b0f11;
+  --color-surface-container-low: #191c1e;
+  --color-surface-container: #1d2022;
+  --color-surface-container-high: #272a2d;
+  --color-surface-container-highest: #323538;
+  --color-on-surface: #e1e3e4;
+  --color-on-surface-variant: #c4c6d2;
+  --color-surface-variant: #434750;
+  --color-surface-tint: #aec6ff;
+  --color-inverse-surface: #e1e3e4;
+  --color-inverse-on-surface: #2e3132;
+
+  --color-outline: #8e9099;
+  --color-outline-variant: #434750;
+
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffdad6;
+
+  --color-background: #101416;
+  --color-on-background: #e1e3e4;
+
+  --color-warning: #ffb77c;
+  --color-on-warning: #4a2400;
+  --color-warning-container: #7c2d12;
+  --color-on-warning-container: #ffedd5;
+
+  --font-display: "Hanken Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 12px;
+  --spacing-md: 24px;
+  --spacing-lg: 48px;
+  --spacing-xl: 80px;
+  --spacing-base: 8px;
+  --spacing-gutter: 24px;
+
+  --radius-sm: 0.125rem;
+  --radius: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+/* Vaalea teema — DESIGN.md:n alkuperäinen paletti. */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --color-primary: #001b44;
+  --color-on-primary: #ffffff;
+  --color-primary-surface: #001b44;
+  --color-on-primary-surface: #ffffff;
+  --color-primary-surface-hover: #002f6c;
+  --color-primary-container: #002f6c;
+  --color-on-primary-container: #7999dc;
+  --color-inverse-primary: #aec6ff;
+
+  --color-secondary: #006e27;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #7ff98d;
+  --color-on-secondary-container: #007329;
+
+  --color-tertiary: #6d5e00;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #c4ab00;
+  --color-on-tertiary-container: #493f00;
 
   --color-surface: #f8f9fa;
   --color-surface-dim: #d9dadb;
@@ -59,95 +153,10 @@ html {
   --color-background: #f8f9fa;
   --color-on-background: #191c1d;
 
-  --font-display: "Hanken Grotesk", sans-serif;
-  --font-body: "Inter", sans-serif;
-
-  --spacing-xs: 4px;
-  --spacing-sm: 12px;
-  --spacing-md: 24px;
-  --spacing-lg: 48px;
-  --spacing-xl: 80px;
-  --spacing-base: 8px;
-  --spacing-gutter: 24px;
-
-  --radius-sm: 0.125rem;
-  --radius: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-full: 9999px;
-
   --color-warning: #f97316;
   --color-on-warning: #ffffff;
   --color-warning-container: #ffedd5;
   --color-on-warning-container: #7c2d12;
-}
-
-/*
- * Tumma teema. Sama tokenilista uudelleen määriteltynä — komponentit eivät muutu,
- * koska ne käyttävät pelkkiä muuttujia.
- *
- * Huom: primary on käytössä sekä otsikkotekstinä (text-primary) että painikkeen
- * taustana (bg-primary). Tummassa se on siksi vaalea sävy ja on-primary tumma,
- * jolloin otsikot ovat luettavia ja painikkeet vaalea-tummalla.
- */
-:root {
-  color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-
-    --color-primary: #aec6ff;
-    --color-on-primary: #002f6c;
-    /* Ainoa käyttö on painikkeen hover. Vaaleassa hover vaalenee, joten tummassakin
-       tämän on oltava primarya vaaleampi — ei Materialin tumma container-sävy. */
-    --color-primary-container: #ccdcff;
-    --color-on-primary-container: #002f6c;
-    --color-inverse-primary: #001b44;
-
-    --color-secondary: #65df76;
-    --color-on-secondary: #00390f;
-    --color-secondary-container: #00531c;
-    --color-on-secondary-container: #81fc90;
-
-    --color-tertiary: #e3c600;
-    --color-on-tertiary: #383000;
-    --color-tertiary-container: #524700;
-    --color-on-tertiary-container: #ffe243;
-
-    --color-surface: #101416;
-    --color-surface-dim: #101416;
-    --color-surface-bright: #363a3c;
-    --color-surface-container-lowest: #0b0f11;
-    --color-surface-container-low: #191c1e;
-    --color-surface-container: #1d2022;
-    --color-surface-container-high: #272a2d;
-    --color-surface-container-highest: #323538;
-    --color-on-surface: #e1e3e4;
-    --color-on-surface-variant: #c4c6d2;
-    --color-surface-variant: #434750;
-    --color-surface-tint: #aec6ff;
-    --color-inverse-surface: #e1e3e4;
-    --color-inverse-on-surface: #2e3132;
-
-    --color-outline: #8e9099;
-    --color-outline-variant: #434750;
-
-    --color-error: #ffb4ab;
-    --color-on-error: #690005;
-    --color-error-container: #93000a;
-    --color-on-error-container: #ffdad6;
-
-    --color-background: #101416;
-    --color-on-background: #e1e3e4;
-
-    --color-warning: #ffb77c;
-    --color-on-warning: #4a2400;
-    --color-warning-container: #7c2d12;
-    --color-on-warning-container: #ffedd5;
-  }
 }
 
 /* Hero-taustakuvan peite: seuraa taustaväriä, joten toimii molemmissa teemoissa. */
@@ -156,50 +165,48 @@ html {
 }
 
 /*
- * Footer on tumma navy-ankkuri molemmissa teemoissa. Ei voi käyttää bg-primarya,
- * koska tummassa primary on vaalea sävy — footerista tulisi sivun kirkkain elementti.
- * Lapset perivät tekstivärin, joten ne eivät tarvitse omaa väriluokkaa.
+ * Footer on tumma navy-ankkuri molemmissa teemoissa. Ei voi käyttää primarya,
+ * koska tummassa se on lähes valkoinen. Lapset perivät tekstivärin.
  */
 .footer-surface {
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
+  background-color: #0d1a2d;
+  color: var(--color-on-surface);
 }
 
 /*
- * Lippukuvan väliosion peite. Tummassa ei voi käyttää primarya, koska vaalea sävy
- * pesisi lippujen värit näkymättömiin — siellä tummennetaan sen sijaan.
+ * Lippukuvan väliosion peite. Tummassa tummennetaan, vaaleassa navy-sävy —
+ * vaalea peite pesisi lippujen värit näkymättömiin.
  */
 .flag-divider {
-  background-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  background-color: color-mix(in srgb, #000 40%, transparent);
 }
 
 .border-left-brazil {
-  border-left: 4px solid #009739;
+  border-left: 4px solid #4ade80;
 }
 .border-left-finland {
-  border-left: 4px solid #002f6c;
+  border-left: 4px solid #7999dc;
 }
 .border-left-warning {
-  border-left: 4px solid #f97316;
+  border-left: 4px solid #ffb77c;
 }
 
-/* Reunavärit kirkkaammiksi tummalla — erityisesti navy katoaisi taustaan. */
-@media (prefers-color-scheme: dark) {
+:root[data-theme="light"] {
   .footer-surface {
-    background-color: #0d1a2d;
-    color: var(--color-on-surface);
+    background-color: #001b44;
+    color: #ffffff;
   }
   .flag-divider {
-    background-color: color-mix(in srgb, #000 40%, transparent);
+    background-color: color-mix(in srgb, #001b44 20%, transparent);
   }
   .border-left-brazil {
-    border-left-color: #4ade80;
+    border-left-color: #009739;
   }
   .border-left-finland {
-    border-left-color: #7999dc;
+    border-left-color: #002f6c;
   }
   .border-left-warning {
-    border-left-color: #ffb77c;
+    border-left-color: #f97316;
   }
 }
 

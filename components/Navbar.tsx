@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,7 +25,7 @@ export default function Navbar() {
           <a href="#adhoc" className="text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200">
             {t.nav.adhoc}
           </a>
-          <a href="#contact" className="bg-primary text-on-primary px-lg py-sm rounded-lg text-sm font-bold active:scale-95 transition-all hover:opacity-90">
+          <a href="#contact" className="bg-primary-surface text-on-primary-surface px-lg py-sm rounded-lg text-sm font-bold active:scale-95 transition-all hover:opacity-90">
             {t.nav.contact}
           </a>
           {/* Language switcher */}
@@ -43,6 +44,7 @@ export default function Navbar() {
             >
               🇧🇷
             </button>
+            <ThemeToggle className="ml-xs" />
           </div>
         </div>
 
@@ -79,6 +81,7 @@ export default function Navbar() {
             >
               🇧🇷
             </button>
+            <ThemeToggle />
           </div>
         </div>
       )}

@@ -18,6 +18,7 @@ Next.js 16 · React 19 · Tailwind CSS v4 · Resend (contact form) · Deploy on 
 | app/tietosuoja/page.tsx     | Privacy policy page                                      |
 | components/                 | Navbar, Hero, Services, Disclaimer, Contact, Footer       |
 | components/ObfuscatedEmail  | Renders the address client-side only (anti-harvesting)   |
+| components/ThemeToggle      | Light/dark switch in the navbar; dark is the default      |
 | lib/                        | LanguageContext + translations.ts (fi / pt-br i18n)      |
 | tests/                      | Vitest suite for the contact route (security behaviour)  |
 | DESIGN.md                   | Full design system spec — read before any UI work        |
@@ -27,10 +28,10 @@ Next.js 16 · React 19 · Tailwind CSS v4 · Resend (contact form) · Deploy on 
 
 ## Design Rules (read DESIGN.md for full spec)
 
-- All color/spacing tokens defined in globals.css @theme block
-- Use CSS vars: `var(--color-primary)` not raw hex in components
-- Custom classes: `.border-left-brazil`, `.border-left-finland`
+- All color/spacing tokens in globals.css; never a raw hex in a component
 - No heavy shadows (tonal layers + 1px borders); 8px spacing base, all multiples
+- Dark is default; light overrides `:root[data-theme="light"]`. `text-primary` is
+  near-white in dark, so buttons use `bg-primary-surface` instead
 
 ## Copy
 
@@ -53,8 +54,7 @@ Deploy only through git — `netlify deploy --build` fails locally on Windows.
 
 1. Create account at resend.com, copy API key
 2. Set env vars in .env.local (dev) and on Netlify (`netlify env:set`) — see
-   .env.example. Without the Upstash vars the rate limiter falls back to an
-   in-memory counter that resets per instance.
+   .env.example. Without the Upstash vars the rate limiter is in-memory only.
 3. `from` is Resend's sandbox address: it ONLY delivers to the Resend account
    owner. Reaching the client needs a verified domain at resend.com/domains.
 

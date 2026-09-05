@@ -122,25 +122,32 @@ The palette is anchored by a deep **Finnish Navy Blue**, which serves as the pri
 
 The background uses a crisp off-white to reduce eye strain during long reading sessions, while the typography utilizes a near-black navy to maintain softer contrast than pure black.
 
-## Dark Theme
+## Themes
 
-The palette above is the light theme. A dark theme is defined in `app/globals.css`
-under `@media (prefers-color-scheme: dark)`, which redefines the same token names —
-components reference only variables, so they need no changes.
+**Dark is the default.** The `@theme` block in `app/globals.css` holds the dark
+values; the light palette documented above is an override on
+`:root[data-theme="light"]`. Components reference only variables, so they carry no
+theme logic.
+
+The `data-theme` attribute is set by an inline script in `app/layout.tsx` before the
+first paint, which avoids a flash of the wrong theme. Precedence: the visitor's own
+choice (stored in `localStorage`) wins; otherwise the system setting decides; with no
+JavaScript the page stays dark. `components/ThemeToggle.tsx` in the navbar flips it at
+runtime.
 
 Three decisions are deliberate and should not be "corrected" without thought:
 
-- **Primary inverts.** `--color-primary` is used both as heading text (`text-primary`)
-  and as button background (`bg-primary`). Dark mode therefore uses the light tone
-  (`#aec6ff`) with a dark `on-primary`, following Material's convention. Headings stay
-  readable and buttons read as light-on-dark.
-- **`primary-container` stays lighter than `primary`.** Its only use is the submit
-  button's hover. Light mode hovers lighter, so dark mode must too — not Material's
-  darker container tone.
-- **Footer and the flag divider have their own classes** (`.footer-surface`,
-  `.flag-divider`) rather than using `bg-primary`. With an inverted primary the footer
-  would become the brightest element on the page, and the divider's light wash would
-  bleach the flag image. Both keep a dark navy identity in either theme.
+- **`primary` is a text colour, not a button colour.** It appears in 39 places as
+  `text-primary` (headings, icons, focus rings) against 3 as a button background.
+  So in dark it is near-white, and buttons use separate tokens —
+  `--color-primary-surface` / `--color-on-primary-surface` — which stay navy with
+  white text in both themes. Headings must never render in the accent blue.
+- **`primary-surface-hover` is lighter than `primary-surface` in both themes**, so
+  the submit button brightens on hover either way.
+- **The footer and the flag divider have their own classes** (`.footer-surface`,
+  `.flag-divider`) instead of a primary utility. The footer stays a dark navy anchor
+  in both themes — driven by a token it would have become the brightest element on the
+  dark page — and the divider darkens rather than washes out the flag image.
 
 ## Typography
 

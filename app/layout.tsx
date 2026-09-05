@@ -15,6 +15,23 @@ const inter = Inter({
   weight: ["400", "500", "600"],
 });
 
+/*
+ * Asettaa teeman ennen ensimmäistä maalausta, jotta sivu ei välähdä väärässä
+ * teemassa. Oletus on tumma: vaaleaan mennään vain jos käyttäjä on valinnut sen
+ * itse tai jos hänen järjestelmänsä on vaalea.
+ */
+const THEME_SCRIPT = `
+try {
+  var t = localStorage.getItem("theme");
+  if (t !== "light" && t !== "dark") {
+    t = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  }
+  document.documentElement.dataset.theme = t;
+} catch (e) {
+  document.documentElement.dataset.theme = "dark";
+}
+`;
+
 export const metadata: Metadata = {
   title: "Marco Izaac — Käännöspalvelut | PT-BR ↔ FI",
   description:
@@ -27,8 +44,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fi" className={`${hankenGrotesk.variable} ${inter.variable} scroll-smooth`}>
+    <html
+      lang="fi"
+      suppressHydrationWarning
+      className={`${hankenGrotesk.variable} ${inter.variable} scroll-smooth`}
+    >
       <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"

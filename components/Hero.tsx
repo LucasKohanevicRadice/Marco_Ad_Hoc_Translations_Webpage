@@ -33,7 +33,7 @@ export default function Hero() {
           <div className="flex flex-wrap gap-md">
             <a
               href="#contact"
-              className="bg-primary text-on-primary px-lg py-md rounded-lg text-xl font-semibold hover:shadow-lg transition-all flex items-center gap-sm"
+              className="bg-primary-surface text-on-primary-surface px-lg py-md rounded-lg text-xl font-semibold hover:shadow-lg transition-all flex items-center gap-sm"
               style={{ fontFamily: "var(--font-display)" }}
             >
               {t.hero.cta}

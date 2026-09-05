@@ -185,7 +185,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={formState === "submitting"}
-                  className="w-full bg-primary text-on-primary py-md rounded-lg text-xl font-bold hover:bg-primary-container transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full bg-primary-surface text-on-primary-surface py-md rounded-lg text-xl font-bold hover:bg-primary-surface-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {formState === "submitting" ? c.submitting : c.submit}
