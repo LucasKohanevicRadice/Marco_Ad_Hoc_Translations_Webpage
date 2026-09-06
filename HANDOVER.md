@@ -1,6 +1,6 @@
 # Handover — Marco Izaac Ad Hoc Käännöspalvelut
 
-Last updated: 2026-09-05
+Last updated: 2026-09-06
 
 Asiakastyö: Lucas rakentaa sivuston sedälleen Marco Izaacille, joka asuu Brasiliassa ja
 tekee portugali–suomi-käännöksiä. Tämä tiedosto on luovutuspiste seuraavalle
@@ -10,7 +10,8 @@ istunnolle. **Päivitä se aina kun jotain valmistuu.**
 **Repo:** https://github.com/LucasKohanevicRadice/Marco_Ad_Hoc_Translations_Webpage (julkinen)
 
 Sivusto on pystyssä ja toimii. **Yhteydenottolomake ei kuitenkaan vielä toimita
-viestejä perille** — se on ainoa varsinainen este, ja sen ratkaisu on huomisen työ.
+viestejä perille** — se on ainoa varsinainen este, ja sen ratkaiseminen on
+seuraavan istunnon ensimmäinen tehtävä.
 
 ---
 
